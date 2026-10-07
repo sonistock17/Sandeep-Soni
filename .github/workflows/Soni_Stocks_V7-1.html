@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Soni Stocks</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f7fb;color:#172033;font-family:Arial,sans-serif}
+.app{max-width:430px;margin:auto;min-height:100vh;background:#f5f7fb;padding-bottom:78px}
+header{padding:22px 18px 14px;background:white;position:sticky;top:0;z-index:2}
+.brand{font-size:25px;font-weight:800}.tag{font-size:12px;color:#687386;margin-top:4px}
+.search{margin-top:15px;background:#f1f3f7;border-radius:13px;padding:12px 14px;color:#7b8492}
+h2{font-size:18px;margin:20px 16px 10px}.row{display:flex;gap:10px;overflow:auto;padding:0 16px}
+.card{min-width:145px;background:white;border-radius:15px;padding:14px;box-shadow:0 2px 10px #0000000b}
+.name{font-size:12px;color:#687386}.price{font-size:20px;font-weight:750;margin-top:7px}.up{color:#16834a;font-size:12px;margin-top:4px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
+.tile{background:white;border-radius:15px;padding:15px;min-height:92px;box-shadow:0 2px 10px #0000000b}
+.tile b{display:block;margin-top:8px}.muted{font-size:12px;color:#768093}
+.stock{display:flex;justify-content:space-between;align-items:center;background:white;margin:8px 16px;padding:14px;border-radius:14px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(430px,100%);height:68px;background:white;border-top:1px solid #e7eaf0;display:flex;justify-content:space-around;align-items:center}
+.nav{font-size:11px;color:#778194;text-align:center}.nav.active{color:#1458d9;font-weight:700}.nav span{display:block;font-size:20px;margin-bottom:3px}
+.badge{display:inline-block;background:#eaf1ff;color:#1458d9;border-radius:20px;padding:5px 9px;font-size:11px}
+</style>
+
+<style>.signalbox{margin:0 16px;padding:14px;background:#fff;border-radius:15px;box-shadow:0 2px 10px #0000000b}.signal{padding:11px;border-radius:12px;font-weight:800;margin-bottom:12px}.buy{background:#eaf8f0;color:#16834a}.sell{background:#fff0f0;color:#d33b3b}.chartbox{height:190px;background:#f7f9fc;border-radius:12px;overflow:hidden}.chartbox svg{width:100%;height:100%}.levels{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.level{padding:10px;border-radius:10px;background:#f5f7fb;font-size:12px}.level b{display:block;font-size:16px;margin-top:4px}.support{color:#16834a}.resistance{color:#d33b3b}.alert{margin:8px 16px;padding:13px;background:#fff;border-radius:14px;border-left:4px solid #1458d9;box-shadow:0 2px 10px #0000000b}.disclaimer{margin:16px;padding:12px;background:#fff8e8;border-radius:12px;font-size:11px;color:#665b3d}</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">Soni Stocks</div>
+  <div class="tag">Understand. Analyse. Invest Smarter.</div>
+  <div class="search">🔍 Search stocks, ETFs & indices</div>
+</header>
+
+<h2>Market Today <span class="badge">DEMO DATA</span></h2>
+<div class="row">
+  <div class="card"><div class="name">NIFTY 50</div><div class="price">25,842.30</div><div class="up">▲ 0.42%</div></div>
+  <div class="card"><div class="name">BANK NIFTY</div><div class="price">58,214.10</div><div class="up">▲ 0.31%</div></div>
+  <div class="card"><div class="name">SENSEX</div><div class="price">84,521.72</div><div class="up">▲ 0.38%</div></div>
+</div>
+
+<h2>Smart Live Chart <span class="badge">DEMO FEED</span></h2><section class="signalbox"><div id="signal" class="signal buy">🟢 POSITIVE TREND — Educational Signal</div><div class="chartbox"><svg viewBox="0 0 400 190" preserveAspectRatio="none"><line x1="0" y1="48" x2="400" y2="48" stroke="#d33b3b" stroke-dasharray="6 5"/><line x1="0" y1="145" x2="400" y2="145" stroke="#16834a" stroke-dasharray="6 5"/><polyline fill="none" stroke="#1458d9" stroke-width="4" points="0,150 35,138 70,143 105,120 140,126 175,98 210,108 245,80 280,88 315,68 350,76 400,40"/><circle cx="175" cy="98" r="6" fill="#16834a"/><text x="182" y="94" font-size="11" fill="#16834a">TREND+</text></svg></div><div class="levels"><div class="level support">Support 1 <b id="s1">25,760</b></div><div class="level support">Support 2 <b id="s2">25,620</b></div><div class="level resistance">Resistance 1 <b id="r1">25,930</b></div><div class="level resistance">Resistance 2 <b id="r2">26,080</b></div></div><div class="muted" style="margin-top:8px">Price, trend and levels update when a live/authorized feed is connected.</div></section>
+<h2>Automatic Smart Alerts</h2><div class="alert">🔔 <b>Corporate Actions</b><div class="muted">Dividend, bonus, split, buyback, rights, AGM/EGM & results</div></div><div class="alert">🤝 <b>Block / Bulk Deals</b><div class="muted">Automatic alert with price, quantity, time and source</div></div><div class="alert">📰 <b>Important Company News</b><div class="muted">Watchlist companies monitored automatically</div></div><div class="alert">💰 <b>Price & Volume Alerts</b><div class="muted">Live price, percentage change and unusual movement</div></div>
+<div class="disclaimer"><b>Legal / Educational Notice:</b> Soni Stocks is not a SEBI-registered Investment Adviser or Research Analyst. Information, market data and technical indicators are for educational/informational purposes only and are not personalized investment advice or a guarantee of returns. Verify information from official exchange/company sources and make independent decisions.</div>
+<h2>Quick Tools</h2>
+<div class="grid">
+  <div class="tile">📊 <b>Soni Score</b><span class="muted">Fundamental & risk score</span></div>
+  <div class="tile">⭐ <b>Watchlist</b><span class="muted">Track your stocks</span></div>
+  <div class="tile">💼 <b>Portfolio</b><span class="muted">Profit & loss</span></div>
+  <div class="tile">🔔 <b>Alerts</b><span class="muted">Price & market alerts</span></div>
+</div>
+
+<h2>Top Gainers</h2>
+<div class="stock"><div><b>ABC Industries</b><div class="muted">ABCIND</div></div><div><b class="up">+8.42%</b></div></div>
+<div class="stock"><div><b>XYZ Motors</b><div class="muted">XYZMOT</div></div><div><b class="up">+6.18%</b></div></div>
+<div class="stock"><div><b>Demo Finance</b><div class="muted">DMFIN</div></div><div><b class="up">+4.91%</b></div></div>
+
+<h2>Coming Next</h2>
+<div class="grid">
+  <div class="tile">📈 <b>Charts</b><span class="muted">Candlestick & indicators</span></div>
+  <div class="tile">📰 <b>News</b><span class="muted">Stock-specific updates</span></div>
+</div>
+
+<nav class="bottom">
+  <div class="nav active"><span>⌂</span>Home</div>
+  <div class="nav"><span>☆</span>Watchlist</div>
+  <div class="nav"><span>⌕</span>Search</div>
+  <div class="nav"><span>▣</span>Portfolio</div>
+  <div class="nav"><span>☰</span>More</div>
+</nav>
+</div>
+<script>let p=25842.3;setInterval(()=>{p+=(Math.random()-.48)*12;document.getElementById("s1").textContent=Math.round(p-82).toLocaleString("en-IN");document.getElementById("s2").textContent=Math.round(p-222).toLocaleString("en-IN");document.getElementById("r1").textContent=Math.round(p+88).toLocaleString("en-IN");document.getElementById("r2").textContent=Math.round(p+238).toLocaleString("en-IN");const e=document.getElementById("signal"),up=p>=25800;e.className="signal "+(up?"buy":"sell");e.textContent=up?"🟢 POSITIVE TREND — Educational Signal":"🔴 NEGATIVE TREND — Educational Signal"},3000);</script></body>
+</html>
