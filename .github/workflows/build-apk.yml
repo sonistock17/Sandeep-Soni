@@ -4,23 +4,20 @@ name: Build Soni Stocks APK
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-              - name: Set up Android SDK
-        run: |
-          echo "ANDROID_HOME=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
-          echo "ANDROID_SDK_ROOT=/usr/local/lib/android/sdk" >> "$GITHUB_ENV"
-          yes | /usr/local/lib/android/sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
@@ -28,10 +25,11 @@ jobs:
           java-version: '17'
 
       - name: Set up Android SDK
-        
+        uses: android-actions/setup-android@v3
 
       - name: Install Android SDK packages
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+        run: |
+          sdkmanager --install "platforms;android-35" "build-tools;35.0.0"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -39,18 +37,9 @@ jobs:
           gradle-version: '8.9'
 
       - name: Create Android project
-        shell: bash
         run: |
-          set -e
-          mkdir -p app/src/main/assets
           mkdir -p app/src/main/java/com/sonistocks/app
-
-          HTML=$(find . -maxdepth 1 -name 'Soni_Stocks_V7*.html' -print -quit)
-          if [ -z "$HTML" ]; then
-            echo "Soni Stocks HTML file not found"
-            exit 1
-          fi
-          cp "$HTML" app/src/main/assets/index.html
+          mkdir -p app/src/main/assets
 
           cat > settings.gradle <<'EOF'
           pluginManagement {
@@ -87,7 +76,7 @@ jobs:
               defaultConfig {
                   applicationId 'com.sonistocks.app'
                   minSdk 23
-                  targetSdk 35
+                  targetSdk 28
                   versionCode 7
                   versionName '7.0'
               }
@@ -98,10 +87,9 @@ jobs:
           <manifest xmlns:android="http://schemas.android.com/apk/res/android">
               <uses-permission android:name="android.permission.INTERNET"/>
               <application
-                  android:theme="@android:style/Theme.Material.Light.NoActionBar"
                   android:label="Soni Stocks"
-                  android:usesCleartextTraffic="false"
-                  android:allowBackup="false">
+                  android:theme="@android:style/Theme.Material.Light.NoActionBar"
+                  android:usesCleartextTraffic="false">
                   <activity
                       android:name=".MainActivity"
                       android:exported="true">
@@ -119,34 +107,34 @@ jobs:
 
           import android.app.Activity;
           import android.os.Bundle;
-          import android.webkit.WebSettings;
           import android.webkit.WebView;
+          import android.webkit.WebSettings;
           import android.webkit.WebViewClient;
 
           public class MainActivity extends Activity {
               @Override
-              protected void onCreate(Bundle state) {
-                  super.onCreate(state);
-                  WebView web = new WebView(this);
-                  web.setWebViewClient(new WebViewClient());
-                  WebSettings settings = web.getSettings();
+              protected void onCreate(Bundle savedInstanceState) {
+                  super.onCreate(savedInstanceState);
+                  WebView webView = new WebView(this);
+                  webView.setWebViewClient(new WebViewClient());
+                  WebSettings settings = webView.getSettings();
                   settings.setJavaScriptEnabled(true);
                   settings.setDomStorageEnabled(true);
-                  setContentView(web);
-                  web.loadUrl("file:///android_asset/index.html");
-              }
-
-              @Override
-              public void onBackPressed() {
-                  WebView web = (WebView) findViewById(android.R.id.content).getChildAt(0);
-                  if (web != null && web.canGoBack()) {
-                      web.goBack();
-                  } else {
-                      super.onBackPressed();
-                  }
+                  setContentView(webView);
+                  webView.loadUrl("file:///android_asset/index.html");
               }
           }
           EOF
+
+          HTML_FILE=$(find . -maxdepth 2 -type f -name 'Soni_Stocks_V7.html' -print -quit)
+          if [ -z "$HTML_FILE" ]; then
+            HTML_FILE=$(find . -maxdepth 2 -type f -name 'Soni_Stocks_V7-1.html' -print -quit)
+          fi
+          if [ -z "$HTML_FILE" ]; then
+            echo "Soni Stocks HTML file not found in repository."
+            exit 1
+          fi
+          cp "$HTML_FILE" app/src/main/assets/index.html
 
       - name: Build APK
         run: gradle --no-daemon assembleDebug
